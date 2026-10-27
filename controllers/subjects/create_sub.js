@@ -3,14 +3,14 @@ const subjectSchema = require("../../models/subjectSchema");
 
 // ---------create subject
 const createSubject = async (req, res) => {
-  const { creatorId, subjectName, code, credits, description } = req.body;
+  const { subjectName, code, credits, description } = req.body;
 
   try {
-    if (!creatorId || !subjectName || !code || !credits || !description) {
+    if (!subjectName || !code || credits === undefined || !description) {
       return res.status(400).json({
         success: false,
         message:
-          "Creator ID, Subject Name, Code, Credits, and Description are required fields.",
+          "Subject Name, Code, Credits, and Description are required fields.",
       });
     }
 
@@ -23,7 +23,7 @@ const createSubject = async (req, res) => {
     }
 
     const newSubject = await subjectSchema.create({
-      creatorId,
+      creatorId: req.user._id,
       subjectName,
       code,
       credits,

@@ -8,10 +8,6 @@ const dbConfig = require("./configs/dbConfig");
 
 const PORT = process.env.PORT || 8000;
 
-// ------dns 
-const dns = require("dns");
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
-
 const app = express();
 
 // ---------- CORS ----------
@@ -29,10 +25,16 @@ app.use(cookieParser());
 // ---------- Routes 
 app.use(router);
 // ---------- Database 
-dbConfig();
+const startServer = async () => {
+  try {
+    await dbConfig();
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Server startup failed:", error.message);
+    process.exitCode = 1;
+  }
+};
 
-
-// ---------- Server 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+startServer();

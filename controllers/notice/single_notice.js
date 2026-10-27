@@ -8,7 +8,7 @@ const getSingleNotice = async (req, res) => {
   try {
     const notice = await noticeSchema
       .findById(id)
-      .populate("createdBy", "name email");
+      .populate("createdBy", "fullname email");
 
     if (!notice) {
       return res.status(404).json({

@@ -14,10 +14,13 @@ const signup = async (req, res) => {
         .status(400)
         .send("Password is required and must be at least 6 characters long");
 
-    if (!role) return res.status(400).send("Role is required");
+    if (!role || !["student", "teacher"].includes(role)) {
+      return res.status(400).send("Role must be student or teacher");
+    }
+    const normalizedEmail = email.trim().toLowerCase();
 
     // --------existing user
-    const existingUser = await userSchema.findOne({ email });
+    const existingUser = await userSchema.findOne({ email: normalizedEmail });
     if (existingUser)
       return res.status(400).send("User with this email already exists");
 
@@ -27,7 +30,7 @@ const signup = async (req, res) => {
     // ----------data base save
     const user = await userSchema.create({
       fullname,
-      email,
+      email: normalizedEmail,
       password,
       role,
       otp,
@@ -38,7 +41,7 @@ const signup = async (req, res) => {
     // ---------send otp to user mail
     try {
       await mailSender({
-        email,
+        email: normalizedEmail,
         subject: "OTP Verification",
         otp,
       });

@@ -6,8 +6,8 @@ const verifyOtp = async (req, res) => {
 
   try {
     const user = await userSchema.findOne({
-      email,
-      otp,
+      email: typeof email === "string" ? email.trim().toLowerCase() : email,
+      otp: typeof otp === "string" ? otp : String(otp || ""),
       otpExpires: { $gt: Date.now() },
       isVerified: false,
     });

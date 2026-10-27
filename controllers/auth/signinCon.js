@@ -25,7 +25,7 @@ const signin = async (req, res) => {
     }
 
     // Find User
-    const user = await userSchema.findOne({ email }).select("+password");
+    const user = await userSchema.findOne({ email: email.trim().toLowerCase() }).select("+password");
 
     if (!user) {
       return res.status(401).json({

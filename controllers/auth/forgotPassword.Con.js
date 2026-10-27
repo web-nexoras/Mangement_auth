@@ -3,6 +3,8 @@ const { isValidEmail } = require("../../helpers/utils");
 const userSchema = require("../../models/userSchema");
 const { mailSender } = require("../../helpers/mailService");
 
+const successMessage = "If an account exists for this email, a reset link has been sent.";
+
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -23,7 +25,7 @@ const forgotPassword = async (req, res) => {
     }
 
     // -------- Find User
-    const user = await userSchema.findOne({ email });
+    const user = await userSchema.findOne({ email: email.trim().toLowerCase() });
 
     if (!user) {
       return res.status(200).json({
@@ -34,8 +36,6 @@ const forgotPassword = async (req, res) => {
 
     // -------- Generate Reset Token
     const resetToken = user.createPasswordResetToken();
-
-    console.log("Reset Token:", resetToken);
 
     // -------- Save Token
     await user.save({ validateBeforeSave: false });
@@ -64,10 +64,7 @@ const forgotPassword = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      success: true,
-      user,
-    });
+    return res.status(200).json({ success: true, message: successMessage });
   } catch (error) {
     console.error(error);
 

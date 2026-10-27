@@ -15,13 +15,12 @@ const { authMiddleware } = require("../../middleware/authMiddleware");
 const { requireAdmin } = require("../../middleware/roleCheckMiddleware");
 
 
-// router.use( authMiddleware, requireAdmin);
-router.use("/notice", createNotice);
+router.use("/notice", authMiddleware, requireAdmin, createNotice);
 router.use("/notice", getAllNotice);
 router.use("/notice", singleNotice);
-router.use("/notice", editsNotice);
-router.use("/notice", deletesNotice);
-router.use("/notice", likeNotice);
-router.use("/notice", dislikeNoticce);
+router.use("/notice", authMiddleware, requireAdmin, editsNotice);
+router.use("/notice", authMiddleware, requireAdmin, deletesNotice);
+router.use("/notice", authMiddleware, likeNotice);
+router.use("/notice", authMiddleware, dislikeNoticce);
 
 module.exports = router;

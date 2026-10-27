@@ -10,6 +10,10 @@ const resetPassword = async (req, res) => {
       return res.status(400).send("Password is required");
     }
 
+    if (typeof token !== "string" || !/^[a-f0-9]{64}$/i.test(token)) {
+      return res.status(400).send("Invalid or expired reset link");
+    }
+
     if (password.length < 6) {
       return res
         .status(400)

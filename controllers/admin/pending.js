@@ -2,8 +2,8 @@ const userSchema = require("../../models/userSchema");
 
 const getPendingUsers = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+    const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 5));
     const skip = (page - 1) * limit;
 
     const filter = {
@@ -14,7 +14,7 @@ const getPendingUsers = async (req, res) => {
     const total = await userSchema.countDocuments(filter);
     const pendingUsers = await userSchema
       .find(filter)
-      .sort({ createdAt: -1 })
+      .sort({ timestamp: -1 })
       .skip(skip)
       .limit(limit);
 
@@ -26,7 +26,10 @@ const getPendingUsers = async (req, res) => {
       data: {
         users: pendingUsers.map((user) => ({
           id: user._id,
-          name: user.name,
+          fullname: user.fullname,
+          email: user.email,
+          role: user.role,
+          isVerified: user.isVerified,
         })),
         pagination: {
           currentPage: page,

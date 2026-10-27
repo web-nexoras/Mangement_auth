@@ -9,6 +9,9 @@ const approvedUserCheck = async (req, res) => {
       { isApproved: true },
       { new: true },
     );
+    if (!approvedUsers) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.status(200).json({
       message: "Approved users check successful",
       users: approvedUsers,

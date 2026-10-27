@@ -4,7 +4,7 @@ const noticeSchema = require("../../models/noticeSchema");
  const getAllNotices = async (req, res) => {
   try {
     const notices = await noticeSchema.find()
-      .populate("createdBy", "name email")
+      .populate("createdBy", "fullname email")
       .sort({ createdAt: -1 });
 
     res.status(200).json({

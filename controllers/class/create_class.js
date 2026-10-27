@@ -4,12 +4,12 @@ const classSchema = require("../../models/classSchema");
 // -----------create class
 const createClass = async (req, res) => {
   try {
-    const { name, code, description, creatorId, subjects } = req.body;
+    const { name, code, description, subjects } = req.body;
 
-    if (!name || !code || !creatorId) {
+    if (!name || !code) {
       return res.status(400).json({
         success: false,
-        message: "Name, code, and creatorId are required.",
+        message: "Name and code are required.",
       });
     }
 
@@ -17,7 +17,7 @@ const createClass = async (req, res) => {
       name,
       code,
       description,
-      creatorId,
+      creatorId: req.user._id,
       subjects: subjects || [],
     });
 

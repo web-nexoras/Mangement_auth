@@ -1,14 +1,9 @@
 const mongoose = require("mongoose");
 
-const dbConfig = () => {
-  mongoose
-    .connect(process.env.DB_URL)
-    .then(() => {
-      console.log("Database connected successfully");
-    })
-    .catch((err) => {
-      console.log(`Database connection failed: ${err}`);
-    });
+const dbConfig = async () => {
+  if (!process.env.DB_URL) throw new Error("DB_URL is not configured");
+  await mongoose.connect(process.env.DB_URL);
+  console.log("Database connected successfully");
 };
 
 

@@ -46,12 +46,14 @@ const payment = async (req, res) => {
     .then((apiResponse) => {
       console.log("SSLCommerz Response:", apiResponse);
 
-      const GatewayPageURL = apiResponse.GatewayPageURL;
+      if (!apiResponse.GatewayPageURL) {
+        return res.status(502).json({ success: false, message: "Payment gateway did not return a redirect URL" });
+      }
 
       res.status(200).json({
         success: true,
         message: "Payment initialized successfully",
-        data: apiResponse,
+        data: { GatewayPageURL: apiResponse.GatewayPageURL },
       });
     })
     .catch((error) => {
