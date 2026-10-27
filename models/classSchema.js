@@ -25,6 +25,11 @@ const classSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Creator ID is required"],
     },
+    teacherId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
     subjects: [
       {
         type: mongoose.Schema.Types.ObjectId,

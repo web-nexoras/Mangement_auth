@@ -1,10 +1,11 @@
 const classSchema = require("../../models/classSchema");
+const userSchema = require("../../models/userSchema");
 
 
 // -----------create class
 const createClass = async (req, res) => {
   try {
-    const { name, code, description, subjects } = req.body;
+    const { name, code, description, subjects, teacherId } = req.body;
 
     if (!name || !code) {
       return res.status(400).json({
@@ -13,11 +14,24 @@ const createClass = async (req, res) => {
       });
     }
 
+    if (teacherId) {
+      const teacher = await userSchema.findOne({
+        _id: teacherId,
+        role: "teacher",
+        isApproved: true,
+        isVerified: true,
+      });
+      if (!teacher) {
+        return res.status(400).json({ success: false, message: "Select an approved teacher." });
+      }
+    }
+
     const newClass = await classSchema.create({
       name,
       code,
       description,
       creatorId: req.user._id,
+      teacherId: teacherId || null,
       subjects: subjects || [],
     });
 

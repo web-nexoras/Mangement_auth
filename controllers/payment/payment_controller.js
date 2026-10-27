@@ -68,7 +68,7 @@ const redirectClient = (path) => (req, res) => {
 };
 
 // ---------payment success
-const paymentSuccess = redirectClient("/paymentSuccess");
+const   paymentSuccess = redirectClient("/paymentSuccess");
 const paymentFail = redirectClient("/payment/payment-fail");
 const paymentCancel = redirectClient("/payment/payment-cancel");
 

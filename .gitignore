@@ -1,28 +1,2 @@
 node_modules/
 .env
-
-
-# PORT = 8000
-# BASE_URL=/api/v1
-# DB_URL=mongodb+srv://management:2eyK9eMrohyL5bLK@cluster0.mjewgzf.mongodb.net/hazira?appName=Cluster0
-
-# JWT_SEC=kdfjdfhnjdhfkjdfh
-
-
-# # --------cloudinary credentials
-# CLOUD_NAME=db21zycb0
-# API_KEY=523281429566225
-# API_SECRET=EymGXIZDwKF7WfcEwayZfYZyN30
-
-# # --------client url
-# CLIENT_URL=http://localhost:5173
-
-# # --------email credentials
-# USER_EMAIL=mahirthecoder.bd@gmail.com
-# USER_PASS=acgg rmko tyze jshm
-
-
-# # ---------ssl credentials 
-# STORE_ID=webne6aa18fd75c425
-# STORE_PASSWD=webne6aa18fd75c425@ssl
-# IS_LIVE=false

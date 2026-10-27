@@ -1,4 +1,6 @@
 const classSchema = require("../../models/classSchema");
+const enrollmentSchema = require("../../models/enrollmentSchema");
+const attendanceSchema = require("../../models/attendanceSchema");
 
 
 // ------------delete class
@@ -14,7 +16,11 @@ const deleteClass = async (req, res) => {
       });
     }
 
-    await classSchema.findByIdAndDelete(id);
+    await Promise.all([
+      classSchema.findByIdAndDelete(id),
+      enrollmentSchema.deleteMany({ classId: id }),
+      attendanceSchema.deleteMany({ classId: id }),
+    ]);
 
     res.status(200).json({
       success: true,

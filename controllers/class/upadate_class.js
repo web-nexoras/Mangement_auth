@@ -1,10 +1,11 @@
 const classSchema = require("../../models/classSchema");
+const userSchema = require("../../models/userSchema");
 
 // -----------update class
 const updateClass = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, code, description, subjects } = req.body;
+    const { name, code, description, subjects, teacherId } = req.body;
 
     const cls = await classSchema.findById(id);
     if (!cls) {
@@ -18,6 +19,20 @@ const updateClass = async (req, res) => {
     if (code !== undefined) cls.code = code;
     if (description !== undefined) cls.description = description;
     if (subjects !== undefined) cls.subjects = subjects;
+    if (teacherId !== undefined) {
+      if (teacherId) {
+        const teacher = await userSchema.findOne({
+          _id: teacherId,
+          role: "teacher",
+          isApproved: true,
+          isVerified: true,
+        });
+        if (!teacher) {
+          return res.status(400).json({ success: false, message: "Select an approved teacher." });
+        }
+      }
+      cls.teacherId = teacherId || null;
+    }
 
     await cls.save();
 
